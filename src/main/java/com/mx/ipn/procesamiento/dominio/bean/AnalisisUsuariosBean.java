@@ -1,7 +1,6 @@
 package com.mx.ipn.procesamiento.dominio.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
@@ -20,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AnalisisUsuariosBean implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Tolerate
 	public AnalisisUsuariosBean () {
 		log.info(("Creando AnalisisUsuariosBean"));

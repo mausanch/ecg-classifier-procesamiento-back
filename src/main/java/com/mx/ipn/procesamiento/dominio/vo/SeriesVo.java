@@ -15,21 +15,9 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
-public class ClasificacionesVo implements Serializable{
+public class SeriesVo <name, value> implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-
-	private String nombre;
-	
-	private String apellidoPaterno;
-	
-	private String apellidoMaterno;
-	
-	private String clasificacion;
-	
-	private Integer inicioAnalisis;
-	
-	private Integer finAnalisis;
-	
-	private Integer intervaloAnalisis;
+	private Integer name;
+	private String value;
 }

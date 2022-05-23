@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
 public class RespuestaAnalisisVo implements Serializable{
 	private static final long serialVersionUID = 1L;
 

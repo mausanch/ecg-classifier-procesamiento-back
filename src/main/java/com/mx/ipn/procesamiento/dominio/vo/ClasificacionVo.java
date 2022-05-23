@@ -3,6 +3,7 @@ package com.mx.ipn.procesamiento.dominio.vo;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -16,16 +17,16 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
 public class ClasificacionVo implements  Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer clasificacion;
+	private String nombre;
+	private String apellidoMaterno;
+	private String apellidoPaterno;
+	private Integer edad;
+	private Integer sexo;
+	private List<ElectrocardiogramaVo> ecg; 
 	
-	private Integer inicioAnalisis;
-	
-	private Integer finAnalisis;
-	
-	private Integer intervaloAnalisis;
 }
