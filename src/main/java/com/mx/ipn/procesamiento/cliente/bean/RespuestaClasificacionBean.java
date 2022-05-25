@@ -14,17 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @ToString
 @Slf4j
-public class ClasificacionBean implements Serializable {
+public class RespuestaClasificacionBean implements Serializable {
 
 
 	private static final long serialVersionUID = 1L;
 
 	@Tolerate
-	public ClasificacionBean () {
-		log.debug("Creando ClasificacionBean");
+	public RespuestaClasificacionBean () {
+		log.debug("Creando RespuestaClasificacionBean");
 	}
 	
-	private Integer sexo;
-	private Integer ritmo_cardiaco;
-	private Integer edad;
+	private Integer clasificacion;
 }
