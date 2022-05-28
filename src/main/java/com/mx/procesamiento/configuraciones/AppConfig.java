@@ -31,7 +31,7 @@ public class AppConfig implements WebMvcConfigurer{
         log.info("Inicio Log");
         return new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES).findAndRegisterModules();
+                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE).findAndRegisterModules();
     }
    
 	
@@ -59,7 +59,7 @@ public class AppConfig implements WebMvcConfigurer{
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/proveedores/**")
+				registry.addMapping("/procesamiento/**")
                 .allowedOrigins("http://localhost:4200","http://localhost:4201")
                 .allowedMethods("OPTIONS","POST","GET","PUT","PATCH","DELETE");
 			}

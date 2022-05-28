@@ -1,27 +1,27 @@
-package com.mx.ipn.procesamiento.cliente.bean;
+package com.mx.ipn.procesamiento.dominio.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
-@Builder
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ECGBean implements Serializable{
+public class HistorialUsuarioVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String [] electrocardiograma;
+	private Long idAnalisis;
+	private Date fechaAnalisis;
+	private String duracion;
+	//private String resultado;
 }

@@ -6,6 +6,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @ToString
 @Slf4j
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class AnalisisUsuarioBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -49,5 +53,12 @@ public class AnalisisUsuarioBean implements Serializable{
 	private Integer intervaloAnalisis;
 	
 	@NotEmpty(message = "El intervalo no puede ser nulo") 
-	private byte [] electrocardiograma;
+	private String [] electrocardiograma;
+	
+	@NotEmpty(message = "La bandera para el intervalo debe tener un valor") 
+	private Boolean isMinutosIntervalo;
+	
+	@NotEmpty(message = "La bandera para el inicio debe tener un valor") 
+	private Boolean isMinutosInicioFin;
+	
 }

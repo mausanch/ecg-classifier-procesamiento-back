@@ -11,6 +11,6 @@ import com.mx.ipn.procesamiento.cliente.bean.RespuestaPanTomkinsBean;
 public interface PanTomkinsRestApi {
 
 	@PostMapping(value="/procesar-ecg")
-	public RespuestaPanTomkinsBean obtenerClasificacion (@RequestBody ECGBean ecgBean); 
+	public RespuestaPanTomkinsBean obtenerRitmoCardiaco (@RequestBody ECGBean ecgBean); 
 
 }

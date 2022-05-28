@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategy.LowerCaseWithUnderscoresStrategy.class)
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ElectrocardiogramaVo implements Serializable{
 	/**
 	 * 
