@@ -1,6 +1,8 @@
 package com.mx.ipn.procesamiento.controlador;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -26,7 +28,11 @@ import com.mx.ipn.procesamiento.cliente.bean.RespuestaPanTomkinsBean;
 import com.mx.ipn.procesamiento.dominio.bean.AnalisisUsuarioBean;
 import com.mx.ipn.procesamiento.dominio.bean.AnalisisUsuariosBean;
 import com.mx.ipn.procesamiento.dominio.vo.ClasificacionVo;
+import com.mx.ipn.procesamiento.dominio.vo.ElectrocardiogramaVo;
 import com.mx.ipn.procesamiento.dominio.vo.RespuestaAnalisisVo;
+import com.mx.ipn.procesamiento.dominio.vo.SeriesVo;
+import com.mx.ipn.procesamiento.modelos.entidades.AnalisisUsuario;
+import com.mx.procesamiento.servicios.AnalisisUsuarioServicio;
 import com.mx.ipn.procesamiento.dominio.vo.ListaHistorialVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +54,9 @@ public class ProcesamientoControlador {
 	@Autowired
 	private PanTomkinsRestApi panTomkinsRestApi;
 	
+	@Autowired
+	private AnalisisUsuarioServicio analisisUsuarioServicio;
+	
 	@PostMapping(value = "/perfil-sintetico")
 	public ResponseEntity<RespuestaClasificacionBean> clasificacionPerfilSintetico (@RequestBody PerfilSinteticoBean perfilSinteticoBean){
 		log.info("<----- Inicio petición ----->");
@@ -65,16 +74,19 @@ public class ProcesamientoControlador {
 	}
 	
 	@PostMapping(value = "/clasificacion-personal")
-	public ResponseEntity<RespuestaClasificacionBean> clasificacionPersonal (@RequestBody AnalisisUsuarioBean analisisUsuarioBean){
+	public ResponseEntity<ClasificacionVo> clasificacionPersonal (@RequestBody AnalisisUsuarioBean analisisUsuarioBean){
 		log.info("<----- Inicio petición Clsificacion----->");
 	
 		log.info(analisisUsuarioBean.toString());
 		
-		ResponseEntity <RespuestaClasificacionBean> resultado=null;
+		ResponseEntity <ClasificacionVo> resultado=null;
 		RespuestaPanTomkinsBean respuestaPanTomkinsBean = null;
 		RespuestaClasificacionBean respuestaClasificacionBean = null;
+		ClasificacionVo clasificacionVo = new ClasificacionVo();
 		ECGBean ecgBean= new ECGBean();
 		
+		List<ElectrocardiogramaVo> listaElectrocardiogramaVo = new ArrayList <ElectrocardiogramaVo>();
+				
 		log.info("<----- Llamado a API Usuarios----->");
 		DatosPersonalesBean datosPersonalesBean= usuariosRestApi.obtenerDatosPersonales(analisisUsuarioBean.getIdUsuario());
 
@@ -101,7 +113,6 @@ public class ProcesamientoControlador {
 			intervaloAnalisis= analisisUsuarioBean.getIntervaloAnalisis()*360;
 		}
 		
-		log.info("<---------------------------------------------------------------------->");
 		log.info("InicioAnalisis:"+String.valueOf(inicioAnalisis));
 		log.info("FinAnalisis:"+String.valueOf(finAnalisis));
 		log.info("IntervaloAnalisis:"+String.valueOf(intervaloAnalisis));
@@ -110,32 +121,67 @@ public class ProcesamientoControlador {
 		String electrocardiogramaAnalisis [];
 		
 		int segmentoAnalisis=1;
-		
-		for (int indice =inicioAnalisis; indice<= finAnalisis; indice++) {
+		int indice;
+		int indiceRespuesta=0;
+		for (indice =inicioAnalisis; indice<=finAnalisis; indice++) {
 		
 			if (indice==(intervaloAnalisis*segmentoAnalisis)) {
+				log.info("<-----------Empezando analisis----------->");
+				log.info("Indice:"+String.valueOf(indice));
 				electrocardiogramaAnalisis = Arrays.copyOfRange(electrocardiograma, (segmentoAnalisis-1)*intervaloAnalisis, indice);
 				ecgBean.setElectrocardiograma(electrocardiogramaAnalisis);
-				log.info(ecgBean.getElectrocardiograma().toString());
 				
 				log.info("<----- Llamado a API Pan Tomkins----->");
 				respuestaPanTomkinsBean = panTomkinsRestApi.obtenerRitmoCardiaco(ecgBean);
 				log.info("Ritmo Cardiaco:"+String.valueOf(respuestaPanTomkinsBean.getRitmo_cardiaco()));
+				
 				log.info("<----- Llamado a API Clasificacion----->");
 				perfilSinteticoBean.setRitmo_cardiaco(Math.round(respuestaPanTomkinsBean.getRitmo_cardiaco()));		
-				log.info(perfilSinteticoBean.toString());
 				respuestaClasificacionBean= clasificadorRestApi.obtenerClasificacion(perfilSinteticoBean);
 				log.info("Clasificación:"+respuestaClasificacionBean.getClasificacion().toString());
-				log.info(String.valueOf(respuestaPanTomkinsBean.getRitmo_cardiaco()));
 				
+				List<SeriesVo>listSerieVo = new ArrayList<>();
 				
+				ElectrocardiogramaVo electrocardiogramaVo = new ElectrocardiogramaVo ();
 				
+				for (String ecg : electrocardiogramaAnalisis) {
+					SeriesVo seriesVo = new SeriesVo();
+					seriesVo.setName(indiceRespuesta*360);
+					seriesVo.setValue(ecg);
+					listSerieVo.add(seriesVo);
+					indiceRespuesta++;
+				}
+
+				if (respuestaClasificacionBean.getClasificacion()==1  && segmentoAnalisis ==1 ) {
+					log.info("Ritmo cardíaco normal");
+					electrocardiogramaVo.setName("Ritmo cardíaco normal");
+					}
+				if (respuestaClasificacionBean.getClasificacion()==1 && segmentoAnalisis ==2) {
+					log.info("Taquicardia");
+					electrocardiogramaVo.setName("Taquicardia");
+					}
+				if (respuestaClasificacionBean.getClasificacion()==1 && segmentoAnalisis ==3) {
+					log.info("Bradicardia");
+					electrocardiogramaVo.setName("Bradicardia");
+					}
 				
+				electrocardiogramaVo.setSeries(listSerieVo);
+				
+				listaElectrocardiogramaVo.add(electrocardiogramaVo);
 				segmentoAnalisis++;
 			}
-		}
-						
-		resultado = new ResponseEntity <> (respuestaClasificacionBean, HttpStatus.OK);
+			
+		}		
+		log.info("Último indice:"+String.valueOf(indice));
+		
+		clasificacionVo.setNombre(datosPersonalesBean.getNombre());
+		clasificacionVo.setApellidoMaterno(datosPersonalesBean.getApellidoMaterno());
+		clasificacionVo.setApellidoPaterno(datosPersonalesBean.getApellidoPaterno());
+		clasificacionVo.setEdad(datosPersonalesBean.getEdad());
+		clasificacionVo.setSexo(datosPersonalesBean.getSexo());
+		clasificacionVo.setEcg(listaElectrocardiogramaVo);
+		
+		resultado = new ResponseEntity <> (clasificacionVo, HttpStatus.OK);
 		
 		log.info("---Fin petición Clasificacion---");
 		return resultado;
@@ -211,5 +257,34 @@ public class ProcesamientoControlador {
 		
 		return resultado;
 	}
+	
+	//Recuperar Clasficacion
+	@GetMapping("/historial/clasificacion/{id_clasificacion}")
+	public ResponseEntity <ListaHistorialVo> recuperarClasificacion (@PathVariable("id_clasificacion") String idClasificacion){
+		
+		ResponseEntity <ListaHistorialVo> resultado=null;
+		
+		ListaHistorialVo RespuestaInicioVo = null;
+		
+		resultado = new ResponseEntity <> (RespuestaInicioVo, HttpStatus.OK);
+		
+		return resultado;
+	}
+	
+	
+	@GetMapping("/prueba-guardar-ECG")
+	public ResponseEntity <AnalisisUsuario> pruebaGuardarECG (@RequestBody AnalisisUsuarioBean analisisUsuarioBean){
+		
+		ResponseEntity <AnalisisUsuario> resultado= null;
+		AnalisisUsuario analisisUsuario = null;
+		String resultadoAnalisis="texto ";
+		
+		
+		analisisUsuario = analisisUsuarioServicio.guardarAnalisisUsuario(analisisUsuarioBean, resultadoAnalisis);
+		
+		resultado = new ResponseEntity <> (analisisUsuario, HttpStatus.OK);
+		return resultado;
+	}
+	
 	
 }
