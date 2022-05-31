@@ -16,7 +16,10 @@ import com.mx.ipn.procesamiento.modelos.entidades.Usuario;
 import com.mx.ipn.procesamiento.modelos.repositorios.AnalisisUsuarioRepositorio;
 import com.mx.procesamiento.servicios.AnalisisUsuarioServicio;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class AnalisisUsuarioServicioImpl implements AnalisisUsuarioServicio{
 	
 	@Autowired
@@ -59,6 +62,7 @@ public class AnalisisUsuarioServicioImpl implements AnalisisUsuarioServicio{
 		String electrocardiograma = new String (analisisUsuario.getElectrocardiograma());
 		String resultados = new String (analisisUsuario.getResultado());
 		
+		analisisUsuarioVo = new AnalisisUsuarioVo();
 		analisisUsuarioVo.setIdAnalisis(analisisUsuario.getIdAnalisis());
 		analisisUsuarioVo.setInicioAnalisis(analisisUsuario.getInicioAnalisis());
 		analisisUsuarioVo.setFinAnalisis(analisisUsuario.getFinAnalisis());
