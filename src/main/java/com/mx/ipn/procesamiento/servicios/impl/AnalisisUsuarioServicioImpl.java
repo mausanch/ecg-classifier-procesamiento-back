@@ -1,4 +1,4 @@
-package com.mx.procesamiento.servicios.impl;
+package com.mx.ipn.procesamiento.servicios.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import com.mx.ipn.procesamiento.dominio.vo.ListaHistorialVo;
 import com.mx.ipn.procesamiento.modelos.entidades.AnalisisUsuario;
 import com.mx.ipn.procesamiento.modelos.entidades.Usuario;
 import com.mx.ipn.procesamiento.modelos.repositorios.AnalisisUsuarioRepositorio;
-import com.mx.procesamiento.servicios.AnalisisUsuarioServicio;
+import com.mx.ipn.procesamiento.servicios.AnalisisUsuarioServicio;
 
 import lombok.extern.slf4j.Slf4j;
 

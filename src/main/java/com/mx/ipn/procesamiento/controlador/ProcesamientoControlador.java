@@ -32,7 +32,7 @@ import com.mx.ipn.procesamiento.dominio.vo.ElectrocardiogramaVo;
 import com.mx.ipn.procesamiento.dominio.vo.RespuestaAnalisisVo;
 import com.mx.ipn.procesamiento.dominio.vo.SeriesVo;
 import com.mx.ipn.procesamiento.modelos.entidades.AnalisisUsuario;
-import com.mx.procesamiento.servicios.AnalisisUsuarioServicio;
+import com.mx.ipn.procesamiento.servicios.AnalisisUsuarioServicio;
 import com.mx.ipn.procesamiento.dominio.vo.ListaHistorialVo;
 
 import lombok.extern.slf4j.Slf4j;

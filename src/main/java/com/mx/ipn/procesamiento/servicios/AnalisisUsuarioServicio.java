@@ -1,4 +1,4 @@
-package com.mx.procesamiento.servicios;
+package com.mx.ipn.procesamiento.servicios;
 
 import com.mx.ipn.procesamiento.dominio.bean.AnalisisUsuarioBean;
 import com.mx.ipn.procesamiento.dominio.vo.AnalisisUsuarioVo;
