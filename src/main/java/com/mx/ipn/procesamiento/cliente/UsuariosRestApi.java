@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.mx.ipn.procesamiento.cliente.bean.DatosPersonalesBean;
 import com.mx.ipn.procesamiento.modelos.entidades.Usuario;
 
-@FeignClient(value= "UsuariosApiCliente", url = "http://localhost:8081/usuarios", primary = false)
+@FeignClient(value= "UsuariosApiCliente", url = "https://microservicio-usuarios.azurewebsites.net/usuarios", primary = false)
 public interface UsuariosRestApi {
 	
 	@GetMapping(value="/usuario/datos-personales-analisis/{id_usuario}")
