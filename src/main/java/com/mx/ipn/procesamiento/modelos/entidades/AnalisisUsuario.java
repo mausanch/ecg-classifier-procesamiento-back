@@ -19,14 +19,20 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "analisis_usuario")
 public class AnalisisUsuario implements Serializable{
@@ -48,16 +54,18 @@ public class AnalisisUsuario implements Serializable{
 	
 	@Lob 
 	@Basic(fetch = FetchType.LAZY) 
+	@Type(type="org.hibernate.type.BinaryType")
 	@Column(name="electrocardiograma", columnDefinition="bytea", nullable=true)
 	private byte [] electrocardiograma;
 	
 	@Lob 
 	@Basic(fetch = FetchType.LAZY) 
+	@Type(type="org.hibernate.type.BinaryType")
 	@Column(name="resultado", columnDefinition="bytea", nullable=true)
 	private byte [] resultado;
 	
 	
-	@ManyToOne(optional = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToOne(optional = true, cascade = { CascadeType.MERGE})
 	@JoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "FK_1_USUARIO_ID"))
 	private Usuario usuario;
 	

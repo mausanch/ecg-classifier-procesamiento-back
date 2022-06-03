@@ -20,5 +20,5 @@ import lombok.ToString;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ListaHistorialVo implements Serializable{
 	private static final long serialVersionUID = 1L;
-	List<HistorialUsuarioVo> historial;
+	List<HistorialUsuarioInterfaceVo> historial;
 }

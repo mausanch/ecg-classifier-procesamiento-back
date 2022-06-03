@@ -27,6 +27,7 @@ import com.mx.ipn.procesamiento.cliente.bean.RespuestaClasificacionBean;
 import com.mx.ipn.procesamiento.cliente.bean.RespuestaPanTomkinsBean;
 import com.mx.ipn.procesamiento.dominio.bean.AnalisisUsuarioBean;
 import com.mx.ipn.procesamiento.dominio.bean.AnalisisUsuariosBean;
+import com.mx.ipn.procesamiento.dominio.vo.AnalisisUsuarioVo;
 import com.mx.ipn.procesamiento.dominio.vo.ClasificacionVo;
 import com.mx.ipn.procesamiento.dominio.vo.ElectrocardiogramaVo;
 import com.mx.ipn.procesamiento.dominio.vo.RespuestaAnalisisVo;
@@ -181,6 +182,10 @@ public class ProcesamientoControlador {
 		clasificacionVo.setSexo(datosPersonalesBean.getSexo());
 		clasificacionVo.setEcg(listaElectrocardiogramaVo);
 		
+		
+		analisisUsuarioServicio.guardarAnalisisUsuario(analisisUsuarioBean, listaElectrocardiogramaVo.toString());
+		
+		
 		resultado = new ResponseEntity <> (clasificacionVo, HttpStatus.OK);
 		
 		log.info("---Fin petición Clasificacion---");
@@ -251,29 +256,35 @@ public class ProcesamientoControlador {
 		
 		ResponseEntity <ListaHistorialVo> resultado=null;
 		
-		ListaHistorialVo RespuestaInicioVo = null;
+		ListaHistorialVo listaHistorialVo = null;
 		
-		resultado = new ResponseEntity <> (RespuestaInicioVo, HttpStatus.OK);
+		listaHistorialVo= analisisUsuarioServicio.recuperarHistorialAnalisisUsuario(Long.valueOf(idUsuario));		
 		
-		return resultado;
-	}
-	
-	//Recuperar Clasficacion
-	@GetMapping("/historial/clasificacion/{id_clasificacion}")
-	public ResponseEntity <ListaHistorialVo> recuperarClasificacion (@PathVariable("id_clasificacion") String idClasificacion){
-		
-		ResponseEntity <ListaHistorialVo> resultado=null;
-		
-		ListaHistorialVo RespuestaInicioVo = null;
-		
-		resultado = new ResponseEntity <> (RespuestaInicioVo, HttpStatus.OK);
+		resultado = new ResponseEntity <> (listaHistorialVo, HttpStatus.OK);
 		
 		return resultado;
 	}
 	
+	@GetMapping("/clasificacion/{id_clasificacion}")
+	public ResponseEntity <AnalisisUsuarioVo> recuperarClasificacion (@PathVariable("id_clasificacion") Long idClasificacion){
+		log.info("<----- Inicio petición ----->");
+		ResponseEntity <AnalisisUsuarioVo> resultado=null;
+		
+		AnalisisUsuarioVo analisisUsuarioVo = new AnalisisUsuarioVo ();
+
+		analisisUsuarioVo = analisisUsuarioServicio.recuperarAnalisisUsuarioById(idClasificacion);
+		
+		resultado = new ResponseEntity <> (analisisUsuarioVo, HttpStatus.OK);
+		
+		log.info("<----- Fin petición ----->");
+		return resultado;
+	}
 	
-	@GetMapping("/prueba-guardar-ECG")
+	
+	@PostMapping("/prueba-guardar-ECG")
 	public ResponseEntity <AnalisisUsuario> pruebaGuardarECG (@RequestBody AnalisisUsuarioBean analisisUsuarioBean){
+		
+		log.info("<----- Inicio petición ----->");
 		
 		ResponseEntity <AnalisisUsuario> resultado= null;
 		AnalisisUsuario analisisUsuario = null;
@@ -283,6 +294,7 @@ public class ProcesamientoControlador {
 		analisisUsuario = analisisUsuarioServicio.guardarAnalisisUsuario(analisisUsuarioBean, resultadoAnalisis);
 		
 		resultado = new ResponseEntity <> (analisisUsuario, HttpStatus.OK);
+		log.info("<----- Fin petición ----->");
 		return resultado;
 	}
 	

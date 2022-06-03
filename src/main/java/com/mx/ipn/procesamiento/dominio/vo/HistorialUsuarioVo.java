@@ -1,7 +1,7 @@
 package com.mx.ipn.procesamiento.dominio.vo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -23,7 +23,6 @@ public class HistorialUsuarioVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long idAnalisis;
-	private Date fechaAnalisis;
+	private LocalDate fechaAnalisis;
 	private Integer duracion;
-	//private String resultado;
 }
