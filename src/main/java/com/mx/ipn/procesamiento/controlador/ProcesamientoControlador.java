@@ -77,9 +77,7 @@ public class ProcesamientoControlador {
 	@PostMapping(value = "/clasificacion-personal")
 	public ResponseEntity<ClasificacionVo> clasificacionPersonal (@RequestBody AnalisisUsuarioBean analisisUsuarioBean){
 		log.info("<----- Inicio petición Clsificacion----->");
-	
-		log.info(analisisUsuarioBean.toString());
-		
+			
 		ResponseEntity <ClasificacionVo> resultado=null;
 		RespuestaPanTomkinsBean respuestaPanTomkinsBean = null;
 		RespuestaClasificacionBean respuestaClasificacionBean = null;
