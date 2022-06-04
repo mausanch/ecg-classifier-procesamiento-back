@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.mx.ipn.procesamiento.cliente.bean.ECGBean;
 import com.mx.ipn.procesamiento.cliente.bean.RespuestaPanTomkinsBean;
 
-@FeignClient(value= "PanTomkinsApiCliente", url = "http://localhost:4000", primary = false)
+@FeignClient(value= "PanTomkinsApiCliente", url = "http://localhost:81", primary = false)
 public interface PanTomkinsRestApi {
 
 	@PostMapping(value="/procesar-ecg")
