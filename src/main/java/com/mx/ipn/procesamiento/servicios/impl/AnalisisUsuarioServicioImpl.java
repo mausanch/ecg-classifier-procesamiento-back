@@ -45,7 +45,9 @@ public class AnalisisUsuarioServicioImpl implements AnalisisUsuarioServicio{
 		log.info ("<--- Inicio servicio Guardar analisis--->");
 		
 		byte [] electrocardiogramaByte = Arrays.toString(analisisUsuarioBean.getElectrocardiograma()).getBytes(StandardCharsets.UTF_8);
-		byte [] resultadoByte = resultado.toString().getBytes();
+		
+		
+		byte [] resultadoByte = resultado.getBytes();
 		
 		log.info("String:" +analisisUsuarioBean.getElectrocardiograma().toString());
 		
@@ -90,9 +92,7 @@ public class AnalisisUsuarioServicioImpl implements AnalisisUsuarioServicio{
 			return null;
 		}
 		
-		analisisUsuario= optionalAnalisisUsuario.get();
-		
-		
+		analisisUsuario= optionalAnalisisUsuario.get();		
 		
 		//String electrocardiograma = new String (Arrays.toString(analisisUsuario.getElectrocardiograma()));
 		String electrocardiograma = null;

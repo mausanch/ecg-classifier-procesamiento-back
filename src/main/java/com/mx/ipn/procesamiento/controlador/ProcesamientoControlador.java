@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.support.JsonFormWriter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mx.ipn.procesamiento.cliente.ClasificadorRestApi;
 import com.mx.ipn.procesamiento.cliente.PanTomkinsRestApi;
 import com.mx.ipn.procesamiento.cliente.UsuariosRestApi;
@@ -38,6 +41,7 @@ import com.mx.ipn.procesamiento.dominio.vo.ListaHistorialVo;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 import java.lang.Math;
 
 @Slf4j
@@ -58,6 +62,9 @@ public class ProcesamientoControlador {
 	@Autowired
 	private AnalisisUsuarioServicio analisisUsuarioServicio;
 	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
 	@PostMapping(value = "/perfil-sintetico")
 	public ResponseEntity<RespuestaClasificacionBean> clasificacionPerfilSintetico (@RequestBody PerfilSinteticoBean perfilSinteticoBean){
 		log.info("<----- Inicio petición ----->");
@@ -75,7 +82,7 @@ public class ProcesamientoControlador {
 	}
 	
 	@PostMapping(value = "/clasificacion-personal")
-	public ResponseEntity<ClasificacionVo> clasificacionPersonal (@RequestBody AnalisisUsuarioBean analisisUsuarioBean){
+	public ResponseEntity<ClasificacionVo> clasificacionPersonal (@RequestBody AnalisisUsuarioBean analisisUsuarioBean) throws JsonProcessingException{
 		log.info("<----- Inicio petición Clsificacion----->");
 			
 		ResponseEntity <ClasificacionVo> resultado=null;
@@ -180,9 +187,10 @@ public class ProcesamientoControlador {
 		clasificacionVo.setSexo(datosPersonalesBean.getSexo());
 		clasificacionVo.setEcg(listaElectrocardiogramaVo);
 		
+
+		String respuestaAnalisisString = objectMapper.writeValueAsString(listaElectrocardiogramaVo);
 		
-		analisisUsuarioServicio.guardarAnalisisUsuario(analisisUsuarioBean, listaElectrocardiogramaVo.toString());
-		
+		analisisUsuarioServicio.guardarAnalisisUsuario(analisisUsuarioBean, respuestaAnalisisString);
 		
 		resultado = new ResponseEntity <> (clasificacionVo, HttpStatus.OK);
 		
