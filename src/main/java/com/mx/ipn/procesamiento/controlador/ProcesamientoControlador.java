@@ -7,7 +7,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.support.JsonFormWriter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -158,15 +157,15 @@ public class ProcesamientoControlador {
 					indiceRespuesta++;
 				}
 
-				if (respuestaClasificacionBean.getClasificacion()==1  && segmentoAnalisis ==1 ) {
+				if (respuestaClasificacionBean.getClasificacion()==1) {
 					log.info("Ritmo cardíaco normal");
 					electrocardiogramaVo.setName("Ritmo cardíaco normal");
 					}
-				if (respuestaClasificacionBean.getClasificacion()==1 && segmentoAnalisis ==2) {
+				if (respuestaClasificacionBean.getClasificacion()==2) {
 					log.info("Taquicardia");
 					electrocardiogramaVo.setName("Taquicardia");
 					}
-				if (respuestaClasificacionBean.getClasificacion()==1 && segmentoAnalisis ==3) {
+				if (respuestaClasificacionBean.getClasificacion()==3) {
 					log.info("Bradicardia");
 					electrocardiogramaVo.setName("Bradicardia");
 					}
